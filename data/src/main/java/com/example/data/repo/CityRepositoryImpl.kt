@@ -15,10 +15,18 @@ class CityRepositoryImpl(
 ) : CityRepository {
 
     override suspend fun fetchCitiesFromRemote(): Flow<List<City>> = flow {
-        emit(cityApiService.getCities().getResponse().cities)
+        val response = cityApiService.getCities().getResponse().cities
+        cacheCities(response.map { it.toEntity() })
+        emit(response)
     }
 
-    override suspend fun insertCities(list: List<CityEntity>) = appDao.insertCities(list)
+    override suspend fun cacheCities(list: List<CityEntity>) {
+        try {
+            appDao.insertCities(list)
+            Log.d("nageh", "insertCities successfully ")
+        } catch (_: Exception) {
+        }
+    }
 
 
     override suspend fun getCitiesFromCache(): Flow<List<City>> = flow {

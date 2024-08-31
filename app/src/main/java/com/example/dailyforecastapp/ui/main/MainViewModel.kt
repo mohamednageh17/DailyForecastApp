@@ -31,14 +31,12 @@ class MainViewModel @Inject constructor(
     private val fetchForecastFromRemoteUseCase: FetchForecastFromRemoteUseCase,
     private val getForecastFromCacheUseCase: GetForecastFromCacheUseCase,
     private val cacheForecastUseCase: CacheForecastUseCase,
-    private val cacheAllCitiesUseCase: CacheAllCitiesUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<ViewState<Any>>()
     val state: LiveData<ViewState<Any>> get() = _state
 
     var selectedCity: City? = null
-    var cachedCities: List<CityEntity>? = null
 
     init {
         getCities()
@@ -108,25 +106,12 @@ class MainViewModel @Inject constructor(
             }
         }
 
-    fun cacheAllCities(list: List<CityEntity>) =
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-
-                cachedCities?.let {
-                    if (it.isEmpty())
-                        cacheAllCitiesUseCase.invoke(list)
-                }
-            } catch (_: Exception) {
-            }
-        }
-
 
     private fun readCitiesFromCache() = viewModelScope.launch(Dispatchers.IO) {
         try {
 
             getCitiesFromCacheUseCase.invoke(null).collect {
                 withContext(Dispatchers.Main) {
-                    cachedCities = it.map { it.toEntity() }
                     _state.postValue(ViewState.Success(it))
                 }
             }

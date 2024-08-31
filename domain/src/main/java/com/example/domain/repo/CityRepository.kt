@@ -8,7 +8,7 @@ interface CityRepository {
 
     suspend fun fetchCitiesFromRemote(): Flow<List<City>>
 
-    suspend fun insertCities(list: List<CityEntity>)
+    suspend fun cacheCities(list: List<CityEntity>)
 
     suspend fun getCitiesFromCache(): Flow<List<City>>
 }

@@ -67,9 +67,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun cacheAllCities(list: List<CityEntity>) {
-        viewModel.cacheAllCities(list)
-    }
 
     private fun cacheForecast(forecast: ForecastResponse) {
         viewModel.selectedCity?.let {
@@ -103,8 +100,6 @@ class MainActivity : AppCompatActivity() {
                         is List<*> -> {
                             (state.data as List<City>).apply {
                                 initCities(this)
-
-                                cacheAllCities(this.map { it.toEntity() })
                             }
                         }
 
