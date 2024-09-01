@@ -1,0 +1,12 @@
+Daily Forecast App..
+this app is built using:
+    -Kotlin
+    -Modularized
+    -Clean arch with MVVM
+    -Retrofit
+    -Room DB
+    -Coroutines
+    -Hilt
+    -Flows
+    -LiveData
+    -Unit test
